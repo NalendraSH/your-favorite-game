@@ -15,20 +15,11 @@ android {
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-//        proguardFiles(
-//            getDefaultProguardFile("proguard-android-optimize.txt"),
-//            "proguard-rules.pro"
-//        )
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles("proguard-rules-dynamic-features.pro")
         }
     }
 
