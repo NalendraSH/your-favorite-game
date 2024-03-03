@@ -10,9 +10,4 @@
     <style name="Theme.TourismApp.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar" />
 
     <style name="Theme.TourismApp.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
-
-    <style name="FabShapeAppearanceOverlay" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">30dp</item>
-    </style>
 </resources>

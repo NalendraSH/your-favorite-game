@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources translatable="false">
     <!--  content description  -->
+    <string name="content_image_detail_game">Gambar dari game</string>
+    <string name="content_add_to_favorite">Simpan game ke favorite</string>
     <string name="content_image_list_game">Klik untuk melihat detail</string>
     <string name="content_rating">Rating dari game</string>
 

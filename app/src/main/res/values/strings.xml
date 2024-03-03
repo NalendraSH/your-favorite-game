@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">Your Favorite Game</string>
 
-    <!--  content description  -->
-    <string name="content_image_detail_game">Gambar dari game</string>
-    <string name="content_add_to_favorite">Simpan game ke favorite</string>
-
     <!--  menu  -->
     <string name="menu_favorite">Favorite</string>
 
