@@ -1,7 +1,9 @@
 package id.nanz.yourfavoritegame.core.data.source.remote.response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class GameResponse(
     val id: Int = 1,
     val name: String = "",
