@@ -19,7 +19,8 @@ import org.koin.core.context.loadKoinModules
 class ListFavoriteGameFragment : Fragment(), GameAdapter.GameAdapterListener {
 
     private val listFavoriteGameViewModel: ListFavoriteGameViewModel by viewModel()
-    private lateinit var binding: FragmentListFavoriteGameBinding
+    private var _binding: FragmentListFavoriteGameBinding? = null
+    private val binding get() = _binding!!
 
     private val gameAdapter: GameAdapter by lazy { GameAdapter(this) }
 
@@ -27,7 +28,7 @@ class ListFavoriteGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentListFavoriteGameBinding.inflate(inflater, container, false)
+        _binding = FragmentListFavoriteGameBinding.inflate(inflater, container, false)
         loadKoinModules(favoriteModule)
         return binding.root
     }
@@ -59,6 +60,8 @@ class ListFavoriteGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         super.onDestroyView()
 
         binding.rvFavoriteGames.adapter = null
+
+        _binding = null
     }
 
 }

@@ -13,6 +13,8 @@ import androidx.navigation.findNavController
 import id.nanz.yourfavoritegame.core.data.Resource
 import id.nanz.yourfavoritegame.core.domain.model.Game
 import id.nanz.yourfavoritegame.core.presentation.GameAdapter
+import id.nanz.yourfavoritegame.core.presentation.gone
+import id.nanz.yourfavoritegame.core.presentation.visible
 import id.nanz.yourfavoritegame.databinding.FragmentListGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import id.nanz.yourfavoritegame.R as AppRes
@@ -21,7 +23,8 @@ import id.nanz.yourfavoritegame.core.R as CoreRes
 class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
 
     private val listGameViewModel: ListGameViewModel by viewModel()
-    private lateinit var binding: FragmentListGameBinding
+    private var _binding: FragmentListGameBinding? = null
+    private val binding get() = _binding!!
 
     private val gameAdapter by lazy { GameAdapter(this) }
     private val searchResultAdapter by lazy { GameAdapter(this) }
@@ -30,7 +33,7 @@ class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentListGameBinding.inflate(inflater, container, false)
+        _binding = FragmentListGameBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -128,6 +131,8 @@ class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         binding.rvGamesSearch.adapter = null
 
         binding.rvGamesMain.adapter = null
+
+        _binding = null
     }
 
 }

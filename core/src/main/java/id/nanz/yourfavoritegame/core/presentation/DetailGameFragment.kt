@@ -22,7 +22,8 @@ import java.util.Locale
 class DetailGameFragment : Fragment() {
 
     private val detailGameViewModel: DetailGameViewModel by viewModel()
-    private lateinit var binding: FragmentDetailGameBinding
+    private var _binding: FragmentDetailGameBinding? = null
+    private val binding get() = _binding!!
 
     private val args: DetailGameFragmentArgs by navArgs()
 
@@ -30,7 +31,7 @@ class DetailGameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailGameBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentDetailGameBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -76,8 +77,8 @@ class DetailGameFragment : Fragment() {
             binding.tvDetailReleasedDate.isVisible = detailGame.released.isNotEmpty()
             binding.tvDetailReleasedDate.text = getString(R.string.text_released_date, formatDate(detailGame.released))
             binding.tvDetailDescription.text = detailGame.descriptionRaw
-            binding.toolbarDetail.setNavigationOnClickListener {
-                view?.findNavController()?.navigateUp()
+            binding.toolbarDetail.setNavigationOnClickListener { v ->
+                v.findNavController().navigateUp()
             }
             binding.fabFavorite.setOnClickListener {
                 detailGameViewModel.setFavoriteGame(DataMapper.mapDetailGameToGame(detailGame))
@@ -90,6 +91,14 @@ class DetailGameFragment : Fragment() {
         val date = sdf.parse(raw)
         val sdfHour = SimpleDateFormat("d MMM, yyyy", Locale.getDefault())
         return sdfHour.format(date ?: Date())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding.fabFavorite.setOnClickListener(null)
+
+        _binding = null
     }
 
 }

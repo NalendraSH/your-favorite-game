@@ -19,8 +19,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
+        val host = "api.rawg.io"
+        buildConfigField("String", "HOST", "\"$host\"")
+        buildConfigField("String", "BASE_URL", "\"https://$host/api/\"")
         buildConfigField("String", "ACCESS_TOKEN", "\"c0cdb47b865d45e494a789af81bca08e\"")
+        buildConfigField("String", "ROOM_PW", "\"TkFMRU5EUkE=\"")
+        buildConfigField("String", "CERT_PINNER_1", "\"sha256/KgyOSpsq6+nlxUBonR1zCRB7+Fg5tEsMluevNjtOGcY=\"")
+        buildConfigField("String", "CERT_PINNER_2", "\"sha256/81Wf12bcLlFHQAfJluxnzZ6Frg+oJ9PWY/Wrwur8viQ=\"")
+        buildConfigField("String", "CERT_PINNER_3", "\"sha256/hxqRlPTu1bMS/0DITB1SSu0vd4u/8l8TjPgfaAp63Gc=\"")
     }
 
     buildTypes {
@@ -64,4 +70,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
+
+    // encryption
+    implementation("net.zetetic:android-database-sqlcipher:4.4.0")
+    implementation("androidx.sqlite:sqlite-ktx:2.4.0")
 }
