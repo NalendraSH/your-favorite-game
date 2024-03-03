@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/core_navigation"
     app:startDestination="@id/detailGameFragment">
 
     <fragment
@@ -10,6 +9,7 @@
         android:name="id.nanz.yourfavoritegame.core.presentation.DetailGameFragment"
         android:label="fragment_detail_game"
         tools:layout="@layout/fragment_detail_game" >
+        <!--suppress NavigationFile -->
         <argument
             android:name="gameId"
             android:defaultValue="0"

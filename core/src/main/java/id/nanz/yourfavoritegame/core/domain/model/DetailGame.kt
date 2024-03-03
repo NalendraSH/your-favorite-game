@@ -1,7 +1,5 @@
 package id.nanz.yourfavoritegame.core.domain.model
 
-import com.google.gson.annotations.SerializedName
-
 data class DetailGame(
     val id: Int = 1,
     val name: String = "",

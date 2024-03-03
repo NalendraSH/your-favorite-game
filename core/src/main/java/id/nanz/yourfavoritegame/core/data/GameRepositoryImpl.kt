@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transform
 
 class GameRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
@@ -30,7 +29,7 @@ class GameRepositoryImpl(
             }
 
             override fun shouldFetch(data: List<Game>?): Boolean =
-                data == null || data.isEmpty()
+                data.isNullOrEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<GameResponse>>> =
                 remoteDataSource.getGames()

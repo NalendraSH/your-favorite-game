@@ -13,8 +13,6 @@ import androidx.navigation.findNavController
 import id.nanz.yourfavoritegame.core.data.Resource
 import id.nanz.yourfavoritegame.core.domain.model.Game
 import id.nanz.yourfavoritegame.core.presentation.GameAdapter
-import id.nanz.yourfavoritegame.core.presentation.gone
-import id.nanz.yourfavoritegame.core.presentation.visible
 import id.nanz.yourfavoritegame.databinding.FragmentListGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import id.nanz.yourfavoritegame.R as AppRes
