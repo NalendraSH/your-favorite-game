@@ -41,18 +41,24 @@ class ListFavoriteGameFragment : Fragment(), GameAdapter.GameAdapterListener {
             binding.viewEmpty.root.isVisible = games.isEmpty()
         }
 
-        binding.toolbarListFavorite.setNavigationOnClickListener {
-            view.findNavController().navigateUp()
+        binding.toolbarListFavorite.setNavigationOnClickListener { v ->
+            v.findNavController().navigateUp()
         }
     }
 
-    override fun onClickItem(data: Game) {
+    override fun onClickItem(data: Game, view: View) {
         val toDetailGame = NavDeepLinkRequest.Builder
             .fromUri(
                 "android-app://id.nanz.yourfavoritegame.core/detail_game_fragment/${data.gameId}".toUri()
             )
             .build()
-        view?.findNavController()?.navigate(toDetailGame)
+        view.findNavController().navigate(toDetailGame)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding.rvFavoriteGames.adapter = null
     }
 
 }

@@ -1,6 +1,7 @@
 package id.nanz.yourfavoritegame.core.presentation
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +12,7 @@ import id.nanz.yourfavoritegame.core.domain.model.Game
 class GameAdapter(private val callback: GameAdapterListener): RecyclerView.Adapter<GameAdapter.ViewHolder>() {
 
     interface GameAdapterListener {
-        fun onClickItem(data: Game)
+        fun onClickItem(data: Game, view: View)
     }
 
     private val diffUtil = object : DiffUtil.ItemCallback<Game>() {
@@ -44,9 +45,13 @@ class GameAdapter(private val callback: GameAdapterListener): RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = asyncListDiffer.currentList[position]
         holder.bindItem(currentData)
-        holder.itemView.setOnClickListener {
-            callback.onClickItem(currentData)
+        holder.itemView.setOnClickListener { v ->
+            callback.onClickItem(currentData, v)
         }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.itemView.setOnClickListener(null)
     }
 
     override fun getItemCount(): Int = asyncListDiffer.currentList.size

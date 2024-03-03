@@ -10,16 +10,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import id.nanz.yourfavoritegame.R as AppRes
-import id.nanz.yourfavoritegame.core.R as CoreRes
 import id.nanz.yourfavoritegame.core.data.Resource
 import id.nanz.yourfavoritegame.core.domain.model.Game
 import id.nanz.yourfavoritegame.core.presentation.GameAdapter
-import id.nanz.yourfavoritegame.databinding.FragmentListGameBinding
 import id.nanz.yourfavoritegame.core.presentation.gone
 import id.nanz.yourfavoritegame.core.presentation.visible
+import id.nanz.yourfavoritegame.databinding.FragmentListGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import id.nanz.yourfavoritegame.R as AppRes
+import id.nanz.yourfavoritegame.core.R as CoreRes
 
 class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
 
@@ -114,13 +113,23 @@ class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         }
     }
 
-    override fun onClickItem(data: Game) {
+    override fun onClickItem(data: Game, view: View) {
         val toDetailGame = NavDeepLinkRequest.Builder
             .fromUri(
                 "android-app://id.nanz.yourfavoritegame.core/detail_game_fragment/${data.gameId}".toUri()
             )
             .build()
-        view?.findNavController()?.navigate(toDetailGame)
+        view.findNavController().navigate(toDetailGame)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding.searchView.setupWithSearchBar(null)
+        binding.searchView.editText.addTextChangedListener(null)
+        binding.rvGamesSearch.adapter = null
+
+        binding.rvGamesMain.adapter = null
     }
 
 }
