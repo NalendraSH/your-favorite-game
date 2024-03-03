@@ -17,7 +17,7 @@ android {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+//        consumerProguardFiles("consumer-rules.pro")
 
         buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
         buildConfigField("String", "ACCESS_TOKEN", "\"c0cdb47b865d45e494a789af81bca08e\"")
