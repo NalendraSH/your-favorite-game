@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources translatable="false">
+    <!--  content description  -->
+    <string name="content_image_list_game">Klik untuk melihat detail</string>
+    <string name="content_rating">Rating dari game</string>
+
+    <!--  main text  -->
+    <string name="text_error_list">Terjadi kesalahan</string>
+    <string name="text_released_date">Released %1$s</string>
+
+    <!--  dummy  -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_favorite">Favorite</string>
+</resources>

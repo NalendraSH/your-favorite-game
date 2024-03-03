@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/core_navigation"
+    app:startDestination="@id/detailGameFragment">
+
+    <fragment
+        android:id="@+id/detailGameFragment"
+        android:name="id.nanz.yourfavoritegame.core.presentation.DetailGameFragment"
+        android:label="fragment_detail_game"
+        tools:layout="@layout/fragment_detail_game" >
+        <argument
+            android:name="gameId"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <deepLink
+            app:uri="android-app://id.nanz.yourfavoritegame.core/detail_game_fragment/{gameId}" />
+    </fragment>
+
+</navigation>

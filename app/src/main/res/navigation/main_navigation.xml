@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/listGameFragment">
+
+    <include app:graph="@navigation/core_navigation" />
+    <include-dynamic
+        android:id="@+id/favorite_navigation"
+        app:moduleName="favorite"
+        app:graphResName="favorite_navigation"/>
+
+    <fragment
+        android:id="@+id/listGameFragment"
+        android:name="id.nanz.yourfavoritegame.presentation.listgame.ListGameFragment"
+        android:label="fragment_list_game"
+        tools:layout="@layout/fragment_list_game" >
+        <action
+            android:id="@+id/action_listGameFragment_to_listFavoriteGameFragment"
+            app:destination="@id/favorite_navigation" />
+    </fragment>
+
+</navigation>
