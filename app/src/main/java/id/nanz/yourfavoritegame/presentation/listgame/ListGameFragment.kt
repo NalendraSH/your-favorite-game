@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.findNavController
 import id.nanz.yourfavoritegame.core.data.Resource
 import id.nanz.yourfavoritegame.core.domain.model.Game
+import id.nanz.yourfavoritegame.core.presentation.BaseFragment
 import id.nanz.yourfavoritegame.core.presentation.GameAdapter
 import id.nanz.yourfavoritegame.core.presentation.gone
 import id.nanz.yourfavoritegame.core.presentation.visible
@@ -20,29 +20,26 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import id.nanz.yourfavoritegame.R as AppRes
 import id.nanz.yourfavoritegame.core.R as CoreRes
 
-class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
+class ListGameFragment : BaseFragment<FragmentListGameBinding>(), GameAdapter.GameAdapterListener {
 
+    private lateinit var bindingImpl: FragmentListGameBinding
     private val listGameViewModel: ListGameViewModel by viewModel()
-    private var _binding: FragmentListGameBinding? = null
-    private val binding get() = _binding!!
-
     private val gameAdapter by lazy { GameAdapter(this) }
     private val searchResultAdapter by lazy { GameAdapter(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentListGameBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View = initBinding(FragmentListGameBinding.inflate(inflater, container, false), this) {
+        bindingImpl = this
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // setup menu
-        binding.searchBar.inflateMenu(AppRes.menu.main_menu)
-        binding.searchBar.setOnMenuItemClickListener {
+        bindingImpl.searchBar.inflateMenu(AppRes.menu.main_menu)
+        bindingImpl.searchBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 AppRes.id.menu_favorite -> {
                     val toFavorite = ListGameFragmentDirections
@@ -54,59 +51,59 @@ class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         }
 
         // setup search view
-        binding.searchView.setupWithSearchBar(binding.searchBar)
-        binding.rvGamesSearch.adapter = searchResultAdapter
-        binding.searchView.editText.doAfterTextChanged { query ->
+        bindingImpl.searchView.setupWithSearchBar(bindingImpl.searchBar)
+        bindingImpl.rvGamesSearch.adapter = searchResultAdapter
+        bindingImpl.searchView.editText.doAfterTextChanged { query ->
             if (query.toString().isEmpty()) {
                 searchResultAdapter.clearList()
             }
             if (query.toString().length > 3) {
                 listGameViewModel.searchGame(query.toString()).observe(viewLifecycleOwner) { games ->
-                        games?.let {
-                            when (games) {
-                                is Resource.Loading -> {
-                                    binding.progressBarSearch.visible()
-                                    binding.rvGamesSearch.gone()
-                                }
-                                is Resource.Success -> {
-                                    binding.progressBarSearch.gone()
-                                    binding.rvGamesSearch.visible()
-                                    searchResultAdapter.clearList()
-                                    searchResultAdapter.submitList(games.data)
-                                }
-                                is Resource.Error -> {
-                                    binding.progressBarSearch.gone()
-                                    binding.rvGamesSearch.gone()
-                                }
+                    games?.let {
+                        when (games) {
+                            is Resource.Loading -> {
+                                bindingImpl.progressBarSearch.visible()
+                                bindingImpl.rvGamesSearch.gone()
+                            }
+                            is Resource.Success -> {
+                                bindingImpl.progressBarSearch.gone()
+                                bindingImpl.rvGamesSearch.visible()
+                                searchResultAdapter.clearList()
+                                searchResultAdapter.submitList(games.data)
+                            }
+                            is Resource.Error -> {
+                                bindingImpl.progressBarSearch.gone()
+                                bindingImpl.rvGamesSearch.gone()
                             }
                         }
                     }
+                }
             }
         }
 
         // custom back pressed behaviour search view
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (binding.searchView.isShowing) {
-                binding.searchView.hide()
+            if (bindingImpl.searchView.isShowing) {
+                bindingImpl.searchView.hide()
             } else {
                 requireActivity().finish()
             }
         }
 
         // fetch data
-        binding.rvGamesMain.adapter = gameAdapter
+        bindingImpl.rvGamesMain.adapter = gameAdapter
         listGameViewModel.getListGame().observe(viewLifecycleOwner) { games ->
             games?.let {
                 when (games) {
-                    is Resource.Loading -> binding.progressBarMain.visible()
+                    is Resource.Loading -> bindingImpl.progressBarMain.visible()
                     is Resource.Success -> {
-                        binding.progressBarMain.gone()
+                        bindingImpl.progressBarMain.gone()
                         gameAdapter.submitList(games.data)
                     }
                     is Resource.Error -> {
-                        binding.progressBarMain.gone()
-                        binding.viewError.root.visible()
-                        binding.viewError.tvError.text =
+                        bindingImpl.progressBarMain.gone()
+                        bindingImpl.viewError.root.visible()
+                        bindingImpl.viewError.tvError.text =
                             games.message ?: getString(CoreRes.string.text_error_list)
                     }
                 }
@@ -123,16 +120,12 @@ class ListGameFragment : Fragment(), GameAdapter.GameAdapterListener {
         view.findNavController().navigate(toDetailGame)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onFragmentDestroy() {
+        bindingImpl.searchView.setupWithSearchBar(null)
+        bindingImpl.searchView.editText.addTextChangedListener(null)
+        bindingImpl.rvGamesSearch.adapter = null
 
-        binding.searchView.setupWithSearchBar(null)
-        binding.searchView.editText.addTextChangedListener(null)
-        binding.rvGamesSearch.adapter = null
-
-        binding.rvGamesMain.adapter = null
-
-        _binding = null
+        bindingImpl.rvGamesMain.adapter = null
     }
 
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import id.nanz.yourfavoritegame.core.R
@@ -19,20 +18,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DetailGameFragment : Fragment() {
+class DetailGameFragment : BaseFragment<FragmentDetailGameBinding>() {
 
+    private lateinit var bindingImpl: FragmentDetailGameBinding
     private val detailGameViewModel: DetailGameViewModel by viewModel()
-    private var _binding: FragmentDetailGameBinding? = null
-    private val binding get() = _binding!!
-
     private val args: DetailGameFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailGameBinding.inflate(layoutInflater, container, false)
-        return binding.root
+    ): View = initBinding(FragmentDetailGameBinding.inflate(inflater, container, false), this) {
+        bindingImpl = this
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,28 +40,28 @@ class DetailGameFragment : Fragment() {
             detailGame?.let {
                 when (detailGame) {
                     is Resource.Loading -> {
-                        binding.progressBarDetail.visible()
-                        binding.fabFavorite.gone()
+                        bindingImpl.progressBarDetail.visible()
+                        bindingImpl.fabFavorite.gone()
                     }
                     is Resource.Success -> {
-                        binding.progressBarDetail.gone()
-                        binding.fabFavorite.visible()
+                        bindingImpl.progressBarDetail.gone()
+                        bindingImpl.fabFavorite.visible()
                         setupUi(detailGame.data)
                     }
                     is Resource.Error -> {
-                        binding.progressBarDetail.gone()
-                        binding.fabFavorite.gone()
-                        binding.tvDetailDescription.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                        binding.tvDetailDescription.text = detailGame.message ?: getString(R.string.text_error_list)
+                        bindingImpl.progressBarDetail.gone()
+                        bindingImpl.fabFavorite.gone()
+                        bindingImpl.tvDetailDescription.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        bindingImpl.tvDetailDescription.text = detailGame.message ?: getString(R.string.text_error_list)
                     }
                 }
             }
         }
         detailGameViewModel.isSetFavorite.observe(viewLifecycleOwner) { isSetFavorite ->
             if (isSetFavorite) {
-                binding.fabFavorite.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_white))
+                bindingImpl.fabFavorite.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_white))
             } else {
-                binding.fabFavorite.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_not_favorite_white))
+                bindingImpl.fabFavorite.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_not_favorite_white))
             }
         }
         detailGameViewModel.getFavoriteById(gameId)
@@ -72,15 +69,15 @@ class DetailGameFragment : Fragment() {
 
     private fun setupUi(data: DetailGame?) {
         data?.let { detailGame ->
-            binding.collapsingToolbar.title = detailGame.name
-            binding.ivDetail.load(detailGame.backgroundImage)
-            binding.tvDetailReleasedDate.isVisible = detailGame.released.isNotEmpty()
-            binding.tvDetailReleasedDate.text = getString(R.string.text_released_date, formatDate(detailGame.released))
-            binding.tvDetailDescription.text = detailGame.descriptionRaw
-            binding.toolbarDetail.setNavigationOnClickListener { v ->
+            bindingImpl.collapsingToolbar.title = detailGame.name
+            bindingImpl.ivDetail.load(detailGame.backgroundImage)
+            bindingImpl.tvDetailReleasedDate.isVisible = detailGame.released.isNotEmpty()
+            bindingImpl.tvDetailReleasedDate.text = getString(R.string.text_released_date, formatDate(detailGame.released))
+            bindingImpl.tvDetailDescription.text = detailGame.descriptionRaw
+            bindingImpl.toolbarDetail.setNavigationOnClickListener { v ->
                 v.findNavController().navigateUp()
             }
-            binding.fabFavorite.setOnClickListener {
+            bindingImpl.fabFavorite.setOnClickListener {
                 detailGameViewModel.setFavoriteGame(DataMapper.mapDetailGameToGame(detailGame))
             }
         }
@@ -93,12 +90,8 @@ class DetailGameFragment : Fragment() {
         return sdfHour.format(date ?: Date())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        binding.fabFavorite.setOnClickListener(null)
-
-        _binding = null
+    override fun onFragmentDestroy() {
+        bindingImpl.fabFavorite.setOnClickListener(null)
     }
 
 }
