@@ -54,7 +54,7 @@ class ListFavoriteGameFragment : BaseFragment<FragmentListFavoriteGameBinding>()
         view.findNavController().navigate(toDetailGame)
     }
 
-    override fun onFragmentDestroy() {
+    override fun destroyView() {
         bindingImpl.rvFavoriteGames.adapter = null
     }
 

@@ -90,7 +90,7 @@ class DetailGameFragment : BaseFragment<FragmentDetailGameBinding>() {
         return sdfHour.format(date ?: Date())
     }
 
-    override fun onFragmentDestroy() {
+    override fun destroyView() {
         bindingImpl.fabFavorite.setOnClickListener(null)
     }
 

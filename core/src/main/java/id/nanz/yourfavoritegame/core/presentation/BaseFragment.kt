@@ -30,10 +30,10 @@ abstract class BaseFragment<T: ViewBinding>: Fragment(), DefaultLifecycleObserve
 
     override fun onDestroyView() {
         super.onDestroyView()
-        onFragmentDestroy()
+        destroyView()
         binding = null
     }
 
-    abstract fun onFragmentDestroy()
+    abstract fun destroyView()
 
 }

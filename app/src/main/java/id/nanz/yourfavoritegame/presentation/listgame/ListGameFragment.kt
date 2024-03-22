@@ -120,7 +120,7 @@ class ListGameFragment : BaseFragment<FragmentListGameBinding>(), GameAdapter.Ga
         view.findNavController().navigate(toDetailGame)
     }
 
-    override fun onFragmentDestroy() {
+    override fun destroyView() {
         bindingImpl.searchView.setupWithSearchBar(null)
         bindingImpl.searchView.editText.addTextChangedListener(null)
         bindingImpl.rvGamesSearch.adapter = null
