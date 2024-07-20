@@ -11,10 +11,10 @@ apply {
 
 android {
     namespace = "id.nanz.yourfavoritegame.core"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -63,22 +63,21 @@ android {
 
 dependencies {
     // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.convert.gson)
+    implementation(libs.okhttp.logging.interceptor)
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("androidx.room:room-ktx:2.6.1")
-    api("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    api(libs.androidx.lifecycle.livedata.ktx)
 
     // room
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    androidTestImplementation("androidx.room:room-testing:2.6.1")
+    ksp(libs.androidx.room.ksp)
+    implementation(libs.androidx.room.ktx)
+    androidTestImplementation(libs.androidx.room.testing)
 
     // encryption
-    implementation("net.zetetic:android-database-sqlcipher:4.4.0")
-    implementation("androidx.sqlite:sqlite-ktx:2.4.0")
+    implementation(libs.sqlcipher)
+    implementation(libs.androidx.sqlite.ktx)
 }
