@@ -1,4 +1,4 @@
-# your-favorite-game
+# Android-Clean-Modular
 
 -  android navigation
 -  clean architecture (architectural pattern)
