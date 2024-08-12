@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Your Favorite Game"
+rootProject.name = "Android-Clean-Modular"
 include(":app")
 include(":core")
 include(":favorite")
